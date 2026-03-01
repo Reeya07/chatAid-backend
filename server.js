@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import { recommendNextStep } from "./recommendation.js";
 
 dotenv.config();
 const app = express();
@@ -21,7 +22,7 @@ function systemPrompt(){
   Reply directly to the user.
   -Be warm and empathetic
   -Ask ONE gentle follow-up question
-  -Give ONE small coping suggestion,prefer short guided exercises that can be done immediately inside the app(breathing,grounding,small mental reset).
+  -Give ONE small coping suggestion .
   -Avoid generic advice like "go for a walk" unless the user asks for lifestyle tips.
   -Keep replies short(2-6 sentences)
   -Make the user feel accompanied,not instructed.
@@ -29,7 +30,7 @@ function systemPrompt(){
   Structured preference:
   1.Emotional reflection
   2.One focused question
-  3.Optional : one short guided in-chat micro exercise(30-60 seconds max)
+  
   
   Rules:
   -Do not diagnose
@@ -107,6 +108,7 @@ function removeThink(text){
       }
 
 app.post("/chat", async (request,response)=>{
+  
 
   try{
     const message =(request.body.message || "").toString();
@@ -145,15 +147,22 @@ app.post("/chat", async (request,response)=>{
   }
   const rawReply = hfData?.choices?.[0]?.message?.content || "";
   const botReply = removeThink(rawReply)  || "I'm here with you.Would you like to share more?";
+
+  const recommendation = recommendNextStep({
+  emotion: emotionResult.emotion,
+  text: message,
+});
   
   return response.json({
     reply: botReply,
     emotion: emotionResult.emotion,
     score: emotionResult.score,
+    recommendation,
   });
   }catch(error){
     return response.status(500).json({error:String(error)});
   }
+  
 })
 app.post ("/cbt/reframe",async (request,response)=>{
   try{
