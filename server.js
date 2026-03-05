@@ -51,13 +51,15 @@ function cbtPrompt({situation,thought,thinking_pattern,evidence_for,advice}){
   Reply a short balanced thought (1-2 sentences) that feels natural and supportive.
   
   Rules:
-  -Do not diagnose
-  -Do not mention being an AI
-  -Do not include any <think> or </think> tags and message inside these tags in every reponse
-  -Do not explain your steps, planning, or reasoning
-  -Do Not output "Okay,let's see"or"First/Next/Then"
-  -Keep it practical,kind ,realistic
-  -Only write the final message to the user
+  - Do NOT ask any questions (no "?", no "what if", no "have you tried", no "could you").
+- Do NOT diagnose.
+- Do NOT mention being an AI.
+- Do NOT include any <think> or </think> tags or any hidden reasoning.
+- Do NOT explain your steps, planning, or reasoning.
+- Do NOT output filler like "Okay", "Let's see", "First/Next/Then".
+- Keep it short, realistic, and supportive (not overly positive).
+- Use simple language.
+- Give concrete next steps the user can do today.
   Safety: If the user mentions self-harm or suicide:
   -Encourage contracting local emergency services immediately.
 
@@ -67,9 +69,9 @@ function cbtPrompt({situation,thought,thinking_pattern,evidence_for,advice}){
   Thinking Pattern : ${thinking_pattern || "not provided"}
   Evidence for: ${evidence_for || "not provided"}
   What I'd tell a friend:${advice || "not provided"}
-  Output format EXACTLY:
-  Balanced :<text>
-  Next:<text>
+  OUTPUT FORMAT (EXACTLY 2 LINES):
+  Balanced: <1–2 sentences, supportive, not a question>
+  Next: <1 sentence OR 2 short bullet actions separated by " • ">
 
   `.trim();
 }
