@@ -39,6 +39,32 @@ export function recommendNextStep({ emotion, text }) {
     };
   }
 
+  const isEmergency =
+    [
+      "suicide",
+      "kill myself",
+      "want to die",
+      "end my life",
+      "hurt myself",
+      "self-harm",
+      "harm myself",
+      "don't want to live",
+      "i want to die",
+      "i feel unsafe",
+      "i can't go on"
+    ].some((w) => t.includes(w));
+
+  // Emergency check first
+  if (isEmergency) {
+    return {
+      type: "support", // chat | exercise | cbt | journal | support
+      label: "Emergency Support",
+      id: "emergency",
+      initialThought: "",
+      journalPrompt: "",
+      reason: "The message suggests immediate emotional support may be needed."
+    };
+  }
   // Emotion 
   if (emotion === "fear" || isFear) {
     rec = {
