@@ -15,10 +15,12 @@ const API_URL = "https://router.huggingface.co/v1/chat/completions"
 const HF_EMOTION_MODEL = process.env.HF_EMOTION_MODEL;
 const EMOTION_API_URL =`https://router.huggingface.co/hf-inference/models/${HF_EMOTION_MODEL}`;
 
-function systemPrompt(){
+function systemPrompt(emotion = "unknown"){
   return`
   You are chatAid, a supportive mental health companion chatbot.
 
+  The user is currently feeling: ${emotion}
+  Adjust your tone and response based on this emotion.
   Reply directly to the user.
   -Be warm and empathetic
   -Ask ONE gentle follow-up question
@@ -124,7 +126,7 @@ app.post("/chat", async (request,response)=>{
     const requestData = {
       model : HF_MODEL,
       messages: [
-     { role: "system", content: systemPrompt()},
+     { role: "system", content: systemPrompt(emotionResult.emotion)},
     { role: "user",content: message},
    
       ],
