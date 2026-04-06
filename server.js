@@ -103,7 +103,7 @@ function removeThink(text){
       }
       const topEmotion = result[0][0];
       return{
-        emotion: topEmotion.label,
+       emotion: topEmotion.score >= 0.6 ? topEmotion.label : "unknown",
         score: topEmotion.score,
       };
     }catch(error){
