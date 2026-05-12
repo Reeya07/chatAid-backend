@@ -111,6 +111,8 @@ function removeThink(text){
     }
       }
 
+app.get("/", (req, res) => res.send("OK"));
+
 app.post("/chat", async (request,response)=>{
   
 
